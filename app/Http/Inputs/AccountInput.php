@@ -10,8 +10,8 @@ class AccountInput extends Request
     {
         return [
             'name' => 'required',
-            'cpf' => 'required|unique:user',
-            'email' => 'required|unique:user',
+            'document' => 'required|unique:account',
+            'email' => 'required|unique:account',
         ];
     }
 }

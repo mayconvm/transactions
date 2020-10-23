@@ -8,9 +8,9 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
-use App\Business\Model\AccountModelInterface;
+use App\Business\Model\AccountInterface;
 
-class Account extends Model implements AuthenticatableContract, AuthorizableContract, AccountModelInterface
+class Account extends Model implements AuthenticatableContract, AuthorizableContract, AccountInterface
 {
     use Authenticatable, Authorizable, HasFactory;
 
@@ -24,7 +24,16 @@ class Account extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'cpf', 'transferValues', 'transferValues'
+        'name',
+        'email',
+        'document',
+        'type',
+        'transferValues'
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -35,6 +44,11 @@ class Account extends Model implements AuthenticatableContract, AuthorizableCont
     protected $hidden = [
         'password',
     ];
+
+    public function getId() : ?string
+    {
+        return $this->id;
+    }
 
     public function getType() : string
     {

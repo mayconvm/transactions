@@ -28,7 +28,9 @@ class AccountController extends Controller
 
     public function store(AccountInput $accountInput)
     {
-        $accountEntity = $this->accountService->createAccount($accountInput);
+        $accountEntity = $this->accountService->createAccount(
+            $accountInput->json()
+        );
 
         // call service
         return (var_dump("store", $accountEntity));

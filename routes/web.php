@@ -23,6 +23,9 @@ use App\Http\Controllers\AccountController;
 $router->get('/account/{accountId}', 'AccountController@show');
 $router->post('/account', 'AccountController@store');
 
+// transaction
+$router->post('/transaction', 'TransactionController@execute');
+
 // account
 // $router->group(['prefix' => 'account'], function () use ($router) {
 //     $router->get('/{accountId}', [AccountController::class, "show"]);
