@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableUsers extends Migration
+class CommentFieldToTransaction extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class UpdateTableUsers extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('document');
-            $table->string('email');
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->string('comment')->nullable();
         });
     }
 
@@ -30,6 +25,8 @@ class UpdateTableUsers extends Migration
      */
     public function down()
     {
-        Schema::drop('accounts');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropColumn('comment');
+        });
     }
 }

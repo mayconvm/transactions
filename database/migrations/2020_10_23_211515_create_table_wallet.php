@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Account;
 
-class UpdateTableUsers extends Migration
+class CreateTableWallet extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,11 @@ class UpdateTableUsers extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('document');
-            $table->string('email');
-            $table->string('type');
+            $table->foreignIdFor(Account::class, 'account_id');
+            $table->float('amount');
+            $table->boolean('status');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class UpdateTableUsers extends Migration
      */
     public function down()
     {
-        Schema::drop('accounts');
+        Schema::dropIfExists('wallets');
     }
 }
