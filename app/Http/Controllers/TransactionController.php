@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\TransactionService;
+use App\Http\Inputs\TransactionInput;
 
 class TransactionController extends Controller
 {
@@ -19,13 +20,30 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function execute(Request $input)
+    public function execute(TransactionInput $transactionInput)
     {
-        $accountEntity = $this->transactionService->executeTransaction(
-            $input->json()
-        );
+        if ($transactionInput->requiredInputValid()) {
+            return $this->dispathError(null, null, $transactionInput->getErros());
+            // return response()
+            //     ->json($transactionInput->getErros(), 422)
+            // ;
+        }
 
-        // call service
-        return (var_dump("store", $accountEntity));
+        try {
+            $transactionEntity = $this->transactionService->executeTransaction(
+                $transactionInput->json()
+            );
+        } catch (\Exception $e) {
+            // dd($e);
+            throw $e;
+
+            return $this->dispathError($e->getMessage(), $e->getCode());
+            // return response()
+            //     ->json([''$e->getMessage()], 400)
+            ;
+        }
+
+
+        return response()->json($transactionEntity->toArray());
     }
 }

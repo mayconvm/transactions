@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use App\Business\Model\TransactionInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model implements TransactionInterface
 {
     use HasFactory;
 
-    // public $status = true;
-
     private $walletPayee;
 
     private $walletPayer;
+
+    private $authorization;
 
 
     /**
@@ -54,6 +55,11 @@ class Transaction extends Model implements TransactionInterface
         return $this->hasOne(Wallet::class, 'id', 'payee');
     }
 
+    public function authorization()
+    {
+        return $this->hasOne(Authorization::class, 'transaction_id', 'id');
+    }
+
     public function getId() : ?string
     {
         return $this->id;
@@ -86,7 +92,7 @@ class Transaction extends Model implements TransactionInterface
 
     public function getTransactionCode() : string
     {
-        return md5($this->getPayer() . $this->getPayee() . $this->getValue() . (string) $this->created_at);
+        return md5($this->getPayer() . $this->getPayee() . $this->getValue() . time());
     }
 
     public function setTransactionCode(string $value) : string
@@ -139,5 +145,15 @@ class Transaction extends Model implements TransactionInterface
     public function getWalletPayee() : Wallet
     {
         return $this->walletPayee;
+    }
+
+    public function getAuthorization() : ?Authorization
+    {
+        return $this->authorization;
+    }
+
+    public function setAuthorization(Authorization $value) : void
+    {
+        $this->authorization = $value;
     }
 }

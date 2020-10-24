@@ -19,6 +19,7 @@ interface TransactionInterface extends ModelInterface
     public function getStatus() : bool;
     public function getWalletPayer() : WalletInterface;
     public function getWalletPayee() : WalletInterface;
+    public function getAuthorization() : ?AuthorizationInterface;
 
     public function setPayer(string $value) : void;
     public function setPayee(string $value) : void;

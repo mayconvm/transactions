@@ -14,9 +14,11 @@ class Account extends Model implements AuthenticatableContract, AuthorizableCont
 {
     use Authenticatable, Authorizable, HasFactory;
 
-    private $type = 'personal';
+    public $transferValues = true;
 
-    private $transferValues = true;
+    protected $attributes = [
+        'type' => self::TYPE_PERSON,
+    ];
 
     /**
      * The attributes that are mass assignable.

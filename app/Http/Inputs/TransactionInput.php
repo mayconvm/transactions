@@ -7,7 +7,7 @@ use Illuminate\Validation\Validator as Validate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class AccountInput extends Request
+class TransactionInput extends Request
 {
     private $validator;
 
@@ -23,6 +23,7 @@ class AccountInput extends Request
 
     public function requiredInputValid() : bool
     {
+        // die(var_dump( app()));
         if (empty($this->validator)) {
             $this->validator();
         }
@@ -38,9 +39,9 @@ class AccountInput extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'document' => 'required|unique:accounts',
-            'email' => 'required|unique:accounts',
+            'value' => 'required:float',
+            'payer' => 'required|int',
+            'payee' => 'required|int',
         ];
     }
 }

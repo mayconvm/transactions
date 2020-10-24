@@ -47,6 +47,17 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton(
+    App\Services\AuthorizationProvider\AuthorizationProviderInterface::class,
+    function ($app) {
+        return new App\Services\AuthorizationProvider\Http\AuthorizationProviderHttp(
+            [
+                'url_authorization_transaction' => env('AUTHORIZATION_URL')
+            ]
+        );
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
@@ -92,7 +103,7 @@ $app->configure('app');
 
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(Illuminate\Database\DatabaseServiceProvider::class);
+$app->register(Illuminate\Database\DatabaseServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

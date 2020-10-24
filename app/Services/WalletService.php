@@ -46,8 +46,7 @@ class WalletService
                 $valueToPayer = $valueTransaction * -1;
                 $valueToPayee = $valueTransaction;
                 break;
-            // case Transaction::TYPE_DEBIT:
-            //     break;
+
             case Transaction::TYPE_REVERT:
                 $valueToPayer = $valueTransaction;
                 $valueToPayee = $valueTransaction * -1;

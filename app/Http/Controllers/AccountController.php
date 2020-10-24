@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Inputs\AccountInput;
 use App\Services\AccountService;
@@ -28,12 +29,23 @@ class AccountController extends Controller
 
     public function store(AccountInput $accountInput)
     {
-        $accountEntity = $this->accountService->createAccount(
-            $accountInput->json()
-        );
+        if ($accountInput->requiredInputValid()) {
+            return response()
+                ->json($accountInput->getErros(), 422)
+            ;
+        }
 
-        // call service
-        return (var_dump("store", $accountEntity));
+        try {
+            $accountEntity = $this->accountService->createAccount(
+                $accountInput->json()
+            );
+        } catch (\Exception $e) {
+            return response()
+                ->json($e->getMessage(), 400)
+            ;
+        }
+
+        return response()->json($accountEntity->toArray());
     }
 
     public function show(AccountInput $accountInput)

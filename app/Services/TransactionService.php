@@ -8,6 +8,7 @@ use App\Business\Transaction as TransactionBusiness;
 use App\Models\Transaction;
 use App\Models\Account;
 use App\Models\Wallet;
+use DB;
 
 class TransactionService
 {
@@ -15,16 +16,19 @@ class TransactionService
     private $transactionRepository;
     private $accountService;
     private $walletService;
+    private $authorizationService;
 
     public function __construct(
         TransactionRepository $transactionRepository,
         AccountService $accountService,
         WalletService $walletService,
+        AuthorizationService $authorizationService,
         TransactionBusiness $transactionBusiness
     ) {
         $this->transactionRepository = $transactionRepository;
         $this->accountService = $accountService;
         $this->walletService = $walletService;
+        $this->authorizationService = $authorizationService;
         $this->transactionBusiness = $transactionBusiness;
     }
 
@@ -38,20 +42,33 @@ class TransactionService
             $this->transactionBusiness->execute($transaction);
         }
 
+        // transaction
+        DB::beginTransaction();
+
         try {
-            // dd($transaction);
             // save
             if (!$this->transactionRepository->save($transaction)) {
                 throw new \Exception("Error to save data about user.", 1);
             }
 
+            // save authorization
+            $authorization = $transaction->getAuthorization();
+            if ($authorization) {
+                $authorization->setTransactionId($transaction->getId());
+                if (!$this->authorizationService->saveAuthorization($authorization)) {
+                    throw new \Exception("Error to save data about user.", 1);
+                }
+            }
+
+            // update wallet
+            $this->walletService->updateAmountToWallets($transaction);
+
+            DB::commit();
         } catch (\Exception $e) {
-            die("Morri" . $e->getMessage());
+            DB::rollback();
+
+            throw $e;
         }
-
-
-        // update wallet
-        $this->walletService->updateAmountToWallets($transaction);
 
         return $transaction;
     }
@@ -68,10 +85,13 @@ class TransactionService
             return $transaction;
         }
 
+        $authorization = $this->authorizationService->checkAuthorization($transaction);
+        $transaction->setAuthorization($authorization);
+
         // TODO: check autorization
-        // if (!$this->transactionBusiness->validateAuthorization($dataAuthorization)) {
-        //     $transaction->setState(false);
-        // }
+        if (!$this->transactionBusiness->validateAuthorization($authorization)) {
+            $transaction->setStatus(false);
+        }
 
         return $transaction;
     }

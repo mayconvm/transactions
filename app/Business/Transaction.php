@@ -4,6 +4,7 @@ namespace App\Business;
 
 use App\Business\Model\AccountInterface;
 use App\Business\Model\TransactionInterface;
+use App\Business\Model\AuthorizationInterface;
 
 class Transaction
 {
@@ -28,7 +29,7 @@ class Transaction
         $payer = $transaction->getWalletPayer();
         $payee = $transaction->getWalletPayee();
 
-        if ($this->checkTypeAccount($transaction)) {
+        if (!$this->checkAllowTypeAccount($transaction)) {
             return false;
         }
 
@@ -39,20 +40,25 @@ class Transaction
         return true;
     }
 
+    public function validateAuthorization(AuthorizationInterface $authorization) : bool
+    {
+        return $authorization->allow();
+    }
+
     protected function checkAmoutAvailable(TransactionInterface $transaction)
     {
         $payer = $transaction->getWalletPayer();
         return $payer->getAmount() > $transaction->getValue();
     }
 
-    protected function checkTypeAccount(TransactionInterface $transaction)
+    protected function checkAllowTypeAccount(TransactionInterface $transaction)
     {
         $account = $transaction
             ->getWalletPayer()
             ->getAccount()
         ;
 
-        return $account->getType() == AccountInterface::TYPE_BUSINESS;
+        return $account->getType() !== AccountInterface::TYPE_BUSINESS;
     }
 
     public function getTransaction()
