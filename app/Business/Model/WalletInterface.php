@@ -6,7 +6,7 @@ interface WalletInterface extends ModelInterface
 {
     public function getAccount() : AccountInterface;
     public function getAmount() : float;
-    // public function getAmountAvailable() : float;
+    public function getAccountId() : string;
 
     public function setAccountId(string $value) : void;
     public function setAmount(float $value) : void;

@@ -46,8 +46,6 @@ class Wallet extends Model implements WalletInterface
         return $this->relationAccount;
     }
 
-
-
     public function getAmount() : float
     {
         return $this->amount;
@@ -56,6 +54,11 @@ class Wallet extends Model implements WalletInterface
     public function setAccountId(string $value) : void
     {
         $this->account_id = $value;
+    }
+
+    public function getAccountId() : string
+    {
+        return $this->account_id;
     }
 
     public function setAmount(float $value) : void
