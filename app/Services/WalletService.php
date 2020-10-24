@@ -1,17 +1,41 @@
 <?php
+/**
+ * Class service
+ * @author mayconvm <mayconvm@gmail.com>
+ */
 
 namespace App\Services;
 
-use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Models\Account;
-use App\Repository\WalletRepository;
+use App\Models\Transaction;
 use App\Business\WalletBusiness;
+use App\Repository\WalletRepository;
 
+/**
+ * Classe WalletService
+ * @package App\Services
+ */
 class WalletService
 {
+
+    /**
+     * Wallet repository
+     * @var WalletRepository
+     */
     private $walletRepository;
 
+    /**
+     * Wallet business
+     * @var WalletBusiness
+     */
+    private $walletBusiness;
+
+    /**
+     * Method construct
+     * @param WalletRepository $walletRepository Wallet repository
+     * @param WalletBusiness   $walletBusiness   Wallet business
+     */
     public function __construct(
         WalletRepository $walletRepository,
         WalletBusiness $walletBusiness
@@ -20,10 +44,13 @@ class WalletService
         $this->walletBusiness = $walletBusiness;
     }
 
+    /**
+     * Create new wallet
+     * @param  Account $account Account entity
+     * @return Wallet
+     */
     public function createWallet(Account $account) : Wallet
     {
-        // TODO: use already wallet
-
         $wallet = $this->walletBusiness->create($account, new Wallet());
 
         if (!$this->save($wallet)) {
@@ -33,6 +60,11 @@ class WalletService
         return $wallet;
     }
 
+    /**
+     * Update amount in wallets
+     * @param  Transaction $transaction Transaction
+     * @return void
+     */
     public function updateAmountToWallets(Transaction $transaction) : void
     {
         // validate
@@ -64,6 +96,11 @@ class WalletService
         );
     }
 
+    /**
+     * Set amout to wallet
+     * @param Wallet $wallet Wallet
+     * @param float  $value  Value to set
+     */
     protected function setAmoutToWalletByType(Wallet $wallet, float $value)
     {
         $wallet->updateAmout($value);
@@ -73,6 +110,11 @@ class WalletService
         }
     }
 
+    /**
+     * Get wallet account
+     * @param  Account $account Account entity
+     * @return Wallet
+     */
     public function getAccountWallet(Account $account) : Wallet
     {
         return $this->walletRepository->getWalletByAccountId(
@@ -80,7 +122,12 @@ class WalletService
         );
     }
 
-    protected function save(Wallet $entity)
+    /**
+     * Persist wallet
+     * @param  Wallet $entity Wallet entity
+     * @return bool
+     */
+    protected function save(Wallet $entity) : bool
     {
         return $entity->save();
     }

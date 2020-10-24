@@ -1,20 +1,30 @@
 <?php
+/**
+ * Classe Controller
+ * @author mayconvm <mayconvm@gmail.com>
+ */
 
 namespace App\Http\Controllers;
 
-use Validator;
-use Illuminate\Http\Request;
-use App\Http\Inputs\AccountInput;
 use App\Services\AccountService;
+use App\Http\Inputs\AccountInput;
 
+/**
+ * Classe AccountController
+ * @package App\Http\Controllers
+ */
 class AccountController extends Controller
 {
-
+    /**
+     * Account service
+     * @var AccountService
+     */
     private $accountService;
 
     /**
      * Create a new controller instance.
      *
+     * @param AccountService $accountService Account service
      * @return void
      */
     public function __construct(AccountService $accountService)
@@ -22,11 +32,11 @@ class AccountController extends Controller
         $this->accountService = $accountService;
     }
 
-    public function update()
-    {
-        return ("update");
-    }
-
+    /**
+     * Create new account
+     * @param  AccountInput $accountInput Data request to new account
+     * @return Response
+     */
     public function store(AccountInput $accountInput)
     {
         if ($accountInput->requiredInputValid()) {

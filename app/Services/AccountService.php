@@ -1,18 +1,47 @@
 <?php
+/**
+ * Class service
+ * @author mayconvm <mayconvm@gmail.com>
+ */
 
 namespace App\Services;
 
-use App\Http\Inputs\AccountInput;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use App\Models\Account;
-use App\Business\Account as AccountBusiness;
+use App\Http\Inputs\AccountInput;
 use App\Repository\AccountRepository;
+use App\Business\Account as AccountBusiness;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
-
+/**
+ * Classe AccountService
+ * @package App\Services
+ */
 class AccountService
 {
+    /**
+     * Repository to account
+     * @var AccountRepository
+     */
+    private $accountRepository;
+
+    /**
+     * Wallet service
+     * @var WalletService
+     */
+    private $walletService;
+
+    /**
+     * Account business
+     * @var AccountBusiness
+     */
     private $accountBusiness;
 
+    /**
+     * Method construct
+     * @param AccountRepository $accountRepository Account repository
+     * @param WalletService     $walletService     Wallet service
+     * @param AccountBusiness   $accountBusiness   Account business
+     */
     public function __construct(
         AccountRepository $accountRepository,
         WalletService $walletService,
@@ -23,6 +52,11 @@ class AccountService
         $this->accountBusiness = $accountBusiness;
     }
 
+    /**
+     * Create account
+     * @param  ParameterBag $input List with parameters to new account
+     * @return Account
+     */
     public function createAccount(ParameterBag $input) : Account
     {
         // account already exists
@@ -50,7 +84,12 @@ class AccountService
         return $accountEntity;
     }
 
-    public function createWallet(Account $account)
+    /**
+     * Create new wallet
+     * @param  Account $account Account model
+     * @return void
+     */
+    public function createWallet(Account $account) : void
     {
         $this->walletService->createWallet($account);
     }
@@ -59,7 +98,12 @@ class AccountService
     {
     }
 
-    public function getAccount(string $accountId) : Account
+    /**
+     * Get modelaccount
+     * @param  id $accountId Account id
+     * @return Account
+     */
+    public function getAccount(int $accountId) : Account
     {
         return $this->accountRepository->getAccountById($accountId);
     }

@@ -1,14 +1,26 @@
 <?php
+/**
+ * Classe BusinessModel
+ * @author mayconvm <mayconvm@gmail.com>
+ */
 
 namespace App\Business\Model;
 
+/**
+ * Classe AccountInterface
+ * @package App\Business\Model
+ */
 interface AccountInterface extends ModelInterface
 {
-    const TYPE_PERSON = 'person';
-
-    const TYPE_BUSINESS = 'business';
-
+    /**
+     * Get Type account
+     * @return string
+     */
     public function getType() : string;
+
+    /**
+     * Set if account can transfer values or not
+     * @param bool $value Can or no
+     */
     public function setNotTransferValues(bool $value);
-    // public function getWallet() : WalletInterface;
 }
