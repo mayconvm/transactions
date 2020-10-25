@@ -10,10 +10,10 @@ use App\Business\Model\AccountInterface;
 use App\Business\Model\WalletInterface;
 
 /**
- * Classe WalletBusiness
+ * Classe Wallet
  * @package App\Business
  */
-class WalletBusiness
+class Wallet
 {
     /**
      * Create wallet to account
@@ -28,9 +28,5 @@ class WalletBusiness
         $wallet->setStatus(true);
 
         return $wallet;
-    }
-
-    public function update(AccountInterface $entity) : WalletInterface
-    {
     }
 }
