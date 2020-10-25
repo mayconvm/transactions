@@ -39,8 +39,8 @@ class TransactionController extends Controller
      */
     public function execute(TransactionInput $transactionInput)
     {
-        if ($transactionInput->requiredInputValid()) {
-            return $this->dispathError(null, null, $transactionInput->getErros());
+        if (!$transactionInput->valid()) {
+            return $this->dispathError(null, null, $transactionInput->getErrors());
         }
 
         try {

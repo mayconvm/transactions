@@ -23,7 +23,7 @@ class Authorization extends Model implements AuthorizationInterface
      * @var array
      */
     protected $attributes = [
-        'message' => 'STATE_LESS',
+        'message' => AuthorizationInterface::MESSAGE_DEFAULT,
         'status' => false,
     ];
 
@@ -64,7 +64,7 @@ class Authorization extends Model implements AuthorizationInterface
      * Relation entity with transaction
      * @return Model
      */
-    public function transaction()
+    protected function transaction()
     {
         return $this->hasOne(Transaction::class, 'id', 'transaction_id');
     }
@@ -115,8 +115,17 @@ class Authorization extends Model implements AuthorizationInterface
      * Set transaction id
      * @param int $transactionId Transaction id
      */
-    public function setTransactionId($transactionId) : void
+    public function setTransactionId(int $transactionId) : void
     {
         $this->transaction_id = $transactionId;
+    }
+
+    /**
+     * Get transaction id
+     * @param int $transactionId Transaction id
+     */
+    public function getTransactionId() : int
+    {
+        return $this->transaction_id;
     }
 }

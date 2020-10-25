@@ -40,22 +40,25 @@ class InputAbstract extends Request implements InputInterface
      * Check if all input send
      * @return bool
      */
-    public function requiredInputValid() : bool
+    public function valid() : bool
     {
         if (empty($this->validator)) {
             $this->validator();
         }
 
-        return $this->validator->fails();
+        return !$this->validator->fails();
     }
 
     /**
      * Get erros validation input
      * @return array
      */
-    public function getErros() : array
+    public function getErrors() : array
     {
-        return $this->validator->errors();
+        return $this->validator
+            ->errors()
+            ->messages()
+        ;
     }
 
     /**

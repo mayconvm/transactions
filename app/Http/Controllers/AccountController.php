@@ -39,9 +39,9 @@ class AccountController extends Controller
      */
     public function store(AccountInput $accountInput)
     {
-        if ($accountInput->requiredInputValid()) {
+        if (!$accountInput->valid()) {
             return response()
-                ->json($accountInput->getErros(), 422)
+                ->json($accountInput->getErrors(), 422)
             ;
         }
 

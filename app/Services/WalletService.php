@@ -9,7 +9,7 @@ namespace App\Services;
 use App\Models\Wallet;
 use App\Models\Account;
 use App\Models\Transaction;
-use App\Business\WalletBusiness;
+use App\Business\Wallet as WalletBusiness;
 use App\Repository\WalletRepository;
 
 /**

@@ -63,21 +63,10 @@ class Transaction extends Model implements TransactionInterface
     ];
 
     /**
-     * Method construct
-     * @param array $attributes Attributes to populate entity
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setStatus(true);
-    }
-
-    /**
      * Relation with Wallet
      * @return Model
      */
-    public function walletPayer()
+    protected function walletPayer()
     {
         return $this->hasOne(Wallet::class, 'id', 'payer');
     }
@@ -86,7 +75,7 @@ class Transaction extends Model implements TransactionInterface
      * Relation with wallet
      * @return Model
      */
-    public function walletPayee()
+    protected function walletPayee()
     {
         return $this->hasOne(Wallet::class, 'id', 'payee');
     }
@@ -95,7 +84,7 @@ class Transaction extends Model implements TransactionInterface
      * Relation with Authorization
      * @return Model
      */
-    public function authorization()
+    protected function authorization()
     {
         return $this->hasOne(Authorization::class, 'transaction_id', 'id');
     }
@@ -160,16 +149,16 @@ class Transaction extends Model implements TransactionInterface
      */
     public function getTransactionCode() : string
     {
-        return md5($this->getPayer() . $this->getPayee() . $this->getValue() . time());
+        return $this->transaction_code;
     }
 
     /**
      * Set transaction code
      * @param string $value Transaction code
      */
-    public function setTransactionCode(string $value) : string
+    public function setTransactionCode(string $value) : void
     {
-        return $this->transaction_code = $value;
+        $this->transaction_code = $value;
     }
 
     /**

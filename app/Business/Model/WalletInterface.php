@@ -47,4 +47,10 @@ interface WalletInterface extends ModelInterface
      * @param bool $value Activer or not
      */
     public function setStatus(bool $value) : void;
+
+    /**
+     * Get status wallet
+     * @return bool
+     */
+    public function getStatus() : bool;
 }

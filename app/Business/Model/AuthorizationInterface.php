@@ -18,6 +18,11 @@ interface AuthorizationInterface extends ModelInterface
     const MESSAGE_ALLOW = 'Autorizado';
 
     /**
+     * Message default
+     */
+    const MESSAGE_DEFAULT = 'Não Autorizado';
+
+    /**
      * Check allow or no
      * @return bool
      */

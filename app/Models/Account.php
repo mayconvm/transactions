@@ -27,7 +27,7 @@ class Account extends Model implements AuthenticatableContract, AuthorizableCont
      * If allow transfer values
      * @var bool
      */
-    private $transferValues;
+    private $transferValues = false;
 
     /**
      * Set default value to attributes
@@ -87,11 +87,56 @@ class Account extends Model implements AuthenticatableContract, AuthorizableCont
     }
 
     /**
+     * Set Type
+     * @param string $value Type account
+     */
+    public function setType(string $value) : void
+    {
+        $this->type = $value;
+    }
+
+    /**
      * Set if possible or not execute transfer
      * @param bool $value Value to parameter
      */
     public function setNotTransferValues(bool $value)
     {
         $this->transferValues = $value;
+    }
+
+    /**
+     * get if possible or not execute transfer
+     * @return bool
+     */
+    public function getNotTransferValues() : bool
+    {
+        return $this->transferValues;
+    }
+
+    /**
+     * Get Name
+     * @return string
+     */
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get email
+     * @return string
+     */
+    public function getEmail() : string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get Document
+     * @return string
+     */
+    public function getDocument() : string
+    {
+        return $this->document;
     }
 }

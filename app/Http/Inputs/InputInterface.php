@@ -24,13 +24,13 @@ interface InputInterface
      * Check if all input send
      * @return bool
      */
-    public function requiredInputValid() : bool;
+    public function valid() : bool;
 
     /**
      * Get erros validation input
      * @return array
      */
-    public function getErros() : array;
+    public function getErrors() : array;
 
     /**
      * Get rules to validation

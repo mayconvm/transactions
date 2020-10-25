@@ -143,6 +143,8 @@ class TransactionService
             $transaction->setStatus(false);
         }
 
+        $transaction->setStatus(true);
+
         return $transaction;
     }
 

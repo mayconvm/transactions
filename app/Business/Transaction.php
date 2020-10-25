@@ -33,6 +33,8 @@ class Transaction
             return $transaction;
         }
 
+        $transaction->setStatus(true);
+
         return $transaction;
     }
 

@@ -42,7 +42,7 @@ class Wallet extends Model implements WalletInterface
      * Relation with Account
      * @return Model
      */
-    public function relationAccount()
+    protected function relationAccount()
     {
         return $this->hasOne(Account::class, 'id', 'account_id');
     }
@@ -118,5 +118,14 @@ class Wallet extends Model implements WalletInterface
     public function setStatus(bool $value) : void
     {
         $this->status = $value;
+    }
+
+    /**
+     * Get status wallet
+     * @return bool
+     */
+    public function getStatus() : bool
+    {
+        return $this->status;
     }
 }

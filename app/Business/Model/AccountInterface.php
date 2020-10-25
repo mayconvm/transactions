@@ -23,4 +23,10 @@ interface AccountInterface extends ModelInterface
      * @param bool $value Can or no
      */
     public function setNotTransferValues(bool $value);
+
+    /**
+     * Check if account receive transfer
+     * @return bool
+     */
+    public function getNotTransferValues() : bool;
 }
