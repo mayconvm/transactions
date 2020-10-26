@@ -4,16 +4,16 @@
  * @author mayconvm <mayconvm@gmail.com>
  */
 
-namespace App\Services\AuthorizationProvider;
+namespace App\Listeners\NotificationProvider;
 
 use App\Models\Transaction;
 use App\Providers\Http\AdapterProviderInterface;
 
 /**
- * Classe AuthorizationProviderInterface
- * @package App\Services\AuthorizationProvider
+ * Classe NotificationProviderInterface
+ * @package App\Listeners\NotificationProvider
  */
-interface AuthorizationProviderInterface
+interface NotificationProviderInterface
 {
     /**
      * Method construct
@@ -22,18 +22,11 @@ interface AuthorizationProviderInterface
     public function __construct (AdapterProviderInterface $adapter);
 
     /**
-     * Check authorization
-     * @param  Transaction $transaction Transaction
-     * @return Array
+     * Send notification
+     * @param  array $data Data notification
+     * @return array
      */
-    public function checkAuthorization(Transaction $transaction) : array;
-
-    /**
-     * Get settings
-     * @param  string $key Key to settings
-     * @return mixed
-     */
-    public function getSettings(string $key);
+    public function sendNotification(array $data) : array;
 
     /**
      * Settings configuration

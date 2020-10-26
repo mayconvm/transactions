@@ -54,6 +54,9 @@ class TransactionController extends Controller
             return $this->dispathError($e->getMessage(), $e->getCode());
         }
 
+        // notification
+        event(new \App\Events\TransactionEvent($transactionEntity));
+
         return response()->json($transactionEntity->toArray());
     }
 
@@ -76,6 +79,9 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             return $this->dispathError($e->getMessage(), $e->getCode());
         }
+
+        // notification
+        event(new \App\Events\TransactionEvent($transactionEntity));
 
         return response()->json($transactionEntity->toArray());
     }

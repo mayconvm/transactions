@@ -6,8 +6,9 @@
 
 namespace App\Services\AuthorizationProvider\Http;
 
-use App\Services\AuthorizationProvider\AuthorizationProviderInterface;
 use App\Models\Transaction;
+use App\Providers\Http\AdapterProviderInterface;
+use App\Services\AuthorizationProvider\AuthorizationProviderInterface;
 
 /**
  * Classe AuthorizationProviderHttp
@@ -22,10 +23,25 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
     private $settings;
 
     /**
-     * Method construct
-     * @param array $settings Array with settings
+     * Adapter
+     * @var AdapterProviderInterface
      */
-    public function __construct (array $settings)
+    private $adapter;
+
+    /**
+     * Method construct
+     * @param AdapterProviderInterface $adapter Adapter to connection
+     */
+    public function __construct (AdapterProviderInterface $adapter)
+    {
+        $this->adapter = $adapter;
+    }
+
+    /**
+     * Settings configuration
+     * @param array $settings Settings
+     */
+    public function setSettings(array $settings) : void
     {
         $this->settings = $settings;
     }
@@ -37,46 +53,14 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
      */
     public function checkAuthorization(Transaction $transaction) : array
     {
-        $result = json_decode($this->sendRequest($transaction), true);
+        $data = $this->prepareData($transaction);
+        $result = $this->adapter->send($data);
 
         if (empty($result)) {
             return [];
         }
 
         return [];
-    }
-
-    /**
-     * Send request
-     * @param  Transaction $transaction Transaction
-     * @return string
-     */
-    protected function sendRequest(Transaction $transaction) : string
-    {
-        if (!($url = $this->getUrl())) {
-            return null;
-        }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            [
-                'Content-Type: application/json',
-                'Accept: application/json'
-            ]
-        );
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->prepareData($transaction));
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return $result;
     }
 
     /**
@@ -92,13 +76,14 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
     }
 
     /**
-     * Get url to service
-     * @return string
+     * Get settings
+     * @param  string $key Key to settings
+     * @return mixed
      */
-    protected function getUrl() : ?string
+    public function getSettings(string $key)
     {
-        if (isset($this->settings['url_authorization_transaction'])) {
-            return $this->settings['url_authorization_transaction'];
+        if (isset($this->settings[$key])) {
+            return $this->settings[$key];
         }
 
         return null;

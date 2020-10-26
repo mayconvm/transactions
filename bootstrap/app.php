@@ -51,9 +51,25 @@ $app->singleton(
     App\Services\AuthorizationProvider\AuthorizationProviderInterface::class,
     function ($app) {
         return new App\Services\AuthorizationProvider\Http\AuthorizationProviderHttp(
-            [
-                'url_authorization_transaction' => env('AUTHORIZATION_URL')
-            ]
+            new App\Providers\Http\AdapterProviderHttp(
+                [
+                    'url' => env('AUTHORIZATION_URL')
+                ]
+            )
+        );
+    }
+);
+
+
+$app->singleton(
+    App\Listeners\NotificationProvider\NotificationProviderInterface::class,
+    function ($app) {
+        return new App\Listeners\NotificationProvider\Http\NotificationProviderHttp(
+            new App\Providers\Http\AdapterProviderHttp(
+                [
+                    'url' => env('NOTIFY_URL')
+                ]
+            )
         );
     }
 );
@@ -89,6 +105,10 @@ $app->configure('app');
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
+
+
+$app->register(App\Providers\EventServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------

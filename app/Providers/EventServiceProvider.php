@@ -1,9 +1,17 @@
 <?php
+/**
+ * Classe Controller
+ * @author mayconvm <mayconvm@gmail.com>
+ */
 
 namespace App\Providers;
 
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
+/**
+ * Classe EventServiceProvider
+ * @package App\Providers
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -12,8 +20,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\ExampleEvent::class => [
-            \App\Listeners\ExampleListener::class,
+        \App\Events\TransactionEvent::class => [
+            \App\Listeners\NotificationListener::class,
         ],
     ];
 }
