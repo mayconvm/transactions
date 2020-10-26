@@ -16,7 +16,7 @@ class CreateTableTransaction extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_code');
-            $table->string('payee');
+            $table->string('payee')->nullable();
             $table->string('payer');
             $table->float('value');
             $table->string('type');
