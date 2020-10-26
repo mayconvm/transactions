@@ -74,7 +74,6 @@ class TransactionController extends Controller
                 $transactionInput
             );
         } catch (\Exception $e) {
-            throw $e;
             return $this->dispathError($e->getMessage(), $e->getCode());
         }
 

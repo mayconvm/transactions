@@ -155,6 +155,8 @@ class TransactionService
      */
     protected function prepareTransaction(Transaction $transaction) : Transaction
     {
+        $transaction->setStatus(true);
+
         if ($transaction->getType() === TransactionBusiness::TYPE_TRANSFER) {
             // check availability
             if (!$this->transactionBusiness->validateAvailability($transaction)) {
@@ -171,8 +173,6 @@ class TransactionService
         if (!$this->transactionBusiness->validateAuthorization($authorization)) {
             $transaction->setStatus(false);
         }
-
-        $transaction->setStatus(true);
 
         return $transaction;
     }

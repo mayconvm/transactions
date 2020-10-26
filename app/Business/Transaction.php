@@ -103,9 +103,4 @@ class Transaction
 
         return $account->getType() !== Account::TYPE_BUSINESS;
     }
-
-
-    public function retrieve()
-    {
-    }
 }

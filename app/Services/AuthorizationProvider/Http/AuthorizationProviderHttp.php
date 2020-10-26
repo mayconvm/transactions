@@ -43,7 +43,7 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
             return [];
         }
 
-        return $result;
+        return [];
     }
 
     /**

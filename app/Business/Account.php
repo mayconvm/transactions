@@ -37,13 +37,4 @@ class Account
 
         return $entity;
     }
-
-    /**
-     * Update Account
-     * @param  AccountInterface $entity Account Entity
-     * @return AccountInterface
-     */
-    public function update(AccountInterface $entity) : AccountInterface
-    {
-    }
 }
