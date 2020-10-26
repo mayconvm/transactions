@@ -156,13 +156,4 @@ class TransactionServiceTest extends TestCase
 
         $entity = $this->service->executeTransaction(new ParameterBag($data));
     }
-
-
-    public function testSaveAuthorization()
-    {
-
-    }
-    // public function testExecuteTransactionSuccess()
-
-    // public function executeTransaction(ParameterBag $input) : Transaction
 }

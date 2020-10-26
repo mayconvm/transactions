@@ -1,24 +1,84 @@
-# Lumen PHP Framework
+# Project to transactions
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Install
+```bash
+$ docker-compose up
+```
 
-## Official Documentation
+## Others commands
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+* Coverage
+```bash
+$ docker-compose exec phpfpm php /usr/bin/composer.phar test-coverage
+```
 
-## Contributing
+Tests
+```bash
+$ docker-compose exec phpcli artisan migrate
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Folders
 
-## Security Vulnerabilities
+```
+├── Business                                    # Classes business
+│   ├── Account.php
+│   ├── Model
+│   │   ├── AccountInterface.php
+│   │   ├── AuthorizationInterface.php
+│   │   ├── ModelInterface.php
+│   │   ├── TransactionInterface.php
+│   │   └── WalletInterface.php
+│   ├── Transaction.php
+│   └── Wallet.php
+├── Events                                      # Events
+│   ├── Event.php
+│   └── TransactionEvent.php
+├── Exceptions
+│   └── Handler.php
+├── Http
+│   ├── Controllers                             # Controllers
+│   │   ├── AccountController.php
+│   │   ├── Controller.php
+│   │   └── TransactionController.php
+│   └── Inputs                                  # Request Inputs
+│       ├── AccountInput.php
+│       ├── InputAbstract.php
+│       ├── InputInterface.php
+│       ├── TransactionCreditInput.php
+│       └── TransactionInput.php
+├── Listeners                                   # Listeners
+│   ├── NotificationListener.php
+│   └── NotificationProvider
+│       ├── Http
+│       │   └── NotificationProviderHttp.php
+│       └── NotificationProviderInterface.php
+├── Models                                      # Models
+│   ├── Account.php
+│   ├── Authorization.php
+│   ├── Transaction.php
+│   └── Wallet.php
+├── Providers                                   # Providers
+│   ├── EventServiceProvider.php
+│   └── Http
+│       ├── AdapterProviderHttp.php
+│       └── AdapterProviderInterface.php
+├── Repository                                  # Repositories
+│   ├── AccountRepository.php
+│   ├── AuthorizationRepository.php
+│   ├── TransactionRepository.php
+│   └── WalletRepository.php
+└── Services                                    # Services
+    ├── AccountService.php
+    ├── AuthorizationProvider
+    │   ├── AuthorizationProviderInterface.php
+    │   └── Http
+    │       └── AuthorizationProviderHttp.php
+    ├── AuthorizationService.php
+    ├── TransactionService.php
+    └── WalletService.php
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+```
 
-## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Arctethure

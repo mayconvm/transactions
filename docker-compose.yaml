@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   db:
+    container_name: db
     image: mysql:5
     ports:
       - "3306:3306"
@@ -25,11 +26,21 @@ services:
       - phpfpm
 
   phpfpm:
+    container_name: phpfpm
     build:
       context: ./
       dockerfile: ./docker/php/Dockerfile
     image: phpfpm
     volumes:
       - ./:/var/www/html/app
-    # depends_on:
-    #   - db
+    depends_on:
+      - db
+
+  # phpcli:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/cli/Dockerfile
+  #   image: phpcli
+  #   container_name: phpcli
+  #   volumes:
+  #     - ./:/var/www/html/app
