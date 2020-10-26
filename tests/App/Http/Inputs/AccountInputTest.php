@@ -20,11 +20,11 @@ class AccountInputTest extends TestCase
     {
         $data = [
             'name' => 'NAME_TEST',
-            'email' => 'email@email.com',
+            'email' => rand() . 'email@email.com',
             'document' => '123123123',
         ];
 
-        $inputs = new AccountInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new AccountInput($data);
         $result = $inputs->valid();
         $this->assertTrue($result);
         $this->assertEmpty($inputs->getErrors());
@@ -37,7 +37,7 @@ class AccountInputTest extends TestCase
             'document' => '123123123',
         ];
 
-        $inputs = new AccountInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new AccountInput($data);
         $result = $inputs->valid();
 
         $this->assertFalse($result);
@@ -54,7 +54,7 @@ class AccountInputTest extends TestCase
             'document' => '123123123',
         ];
 
-        $inputs = new AccountInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new AccountInput($data);
         $result = $inputs->valid();
 
         $this->assertFalse($result);

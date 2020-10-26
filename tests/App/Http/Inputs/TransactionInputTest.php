@@ -24,7 +24,7 @@ class TransactionInputTest extends TestCase
             'payee' => 2,
         ];
 
-        $inputs = new TransactionInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new TransactionInput($data);
         $result = $inputs->valid();
         $this->assertTrue($result);
         $this->assertEmpty($inputs->getErrors());
@@ -37,7 +37,7 @@ class TransactionInputTest extends TestCase
             'payer' => 1,
         ];
 
-        $inputs = new TransactionInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new TransactionInput($data);
         $result = $inputs->valid();
 
         $this->assertFalse($result);
@@ -54,7 +54,7 @@ class TransactionInputTest extends TestCase
             'value' => 100,
         ];
 
-        $inputs = new TransactionInput([], [], [], [], [], [], json_encode($data));
+        $inputs = new TransactionInput($data);
         $result = $inputs->valid();
 
         $this->assertFalse($result);
