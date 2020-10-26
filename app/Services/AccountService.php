@@ -89,13 +89,9 @@ class AccountService
      * @param  Account $account Account model
      * @return void
      */
-    public function createWallet(Account $account) : void
+    protected function createWallet(Account $account) : void
     {
         $this->walletService->createWallet($account);
-    }
-
-    public function editAccount() : AccountInput
-    {
     }
 
     /**
@@ -107,5 +103,4 @@ class AccountService
     {
         return $this->accountRepository->getAccountById($accountId);
     }
-
 }

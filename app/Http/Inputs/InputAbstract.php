@@ -9,12 +9,13 @@ namespace App\Http\Inputs;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator as Validate;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Classe InputAbstract
  * @package App\Http\Controllers\Inputs
  */
-class InputAbstract extends Request implements InputInterface
+class InputAbstract extends ParameterBag implements InputInterface
 {
     /**
      * Validator
@@ -23,13 +24,19 @@ class InputAbstract extends Request implements InputInterface
     protected $validator;
 
     /**
+     * Attributes
+     * @var array
+     */
+    protected $attributes;
+
+    /**
      * Create validator to data request
      * @return Validate
      */
     public function validator() : Validate
     {
         $this->validator = Validator::make(
-            $this->json()->all(),
+            $this->all(),
             $this->rules()
         );
 

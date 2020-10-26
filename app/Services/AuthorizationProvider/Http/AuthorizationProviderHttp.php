@@ -88,8 +88,6 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
     {
         return [
             'value' => $transaction->getValue(),
-            'payer' => $transaction->getPayer(),
-            'payee' => $transaction->getPayee(),
         ];
     }
 

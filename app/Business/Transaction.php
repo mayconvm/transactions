@@ -17,6 +17,15 @@ use App\Business\Model\AuthorizationInterface;
 class Transaction
 {
     /**
+     * Type credit
+     */
+    const TYPE_CREDIT = 'credit';
+
+    /**
+     * Type transfer
+     */
+    const TYPE_TRANSFER = 'transfer';
+    /**
      * Transaction
      * @var TransactionInterface
      */

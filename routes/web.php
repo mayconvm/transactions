@@ -25,6 +25,7 @@ $router->post('/account', 'AccountController@store');
 
 // transaction
 $router->post('/transaction', 'TransactionController@execute');
+$router->post('/transaction/credit', 'TransactionController@executeCredit');
 
 // account
 // $router->group(['prefix' => 'account'], function () use ($router) {

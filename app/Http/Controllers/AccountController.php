@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AccountService;
 use App\Http\Inputs\AccountInput;
+use Illuminate\Http\Request;
 
 /**
  * Classe AccountController
@@ -34,11 +35,12 @@ class AccountController extends Controller
 
     /**
      * Create new account
-     * @param  AccountInput $accountInput Data request to new account
+     * @param  Request $request Data request to new account
      * @return Response
      */
-    public function store(AccountInput $accountInput)
+    public function store(Request $request)
     {
+        $accountInput = new AccountInput($request->all());
         if (!$accountInput->valid()) {
             return response()
                 ->json($accountInput->getErrors(), 422)
@@ -47,7 +49,7 @@ class AccountController extends Controller
 
         try {
             $accountEntity = $this->accountService->createAccount(
-                $accountInput->json()
+                $accountInput
             );
         } catch (\Exception $e) {
             return response()
@@ -56,13 +58,5 @@ class AccountController extends Controller
         }
 
         return response()->json($accountEntity->toArray());
-    }
-
-    public function show(AccountInput $accountInput)
-    {
-
-        $result = $accountInput->validated();
-        // call service
-        return (var_dump("show", $result));
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Wallet;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Business\Wallet as WalletBusiness;
+use App\Business\Transaction as TransactionBusiness;
 use App\Repository\WalletRepository;
 
 /**
@@ -74,25 +75,24 @@ class WalletService
 
         $valueTransaction = $transaction->getValue();
         switch ($transaction->getType()) {
-            case Transaction::TYPE_CREDIT:
+            case TransactionBusiness::TYPE_TRANSFER:
                 $valueToPayer = $valueTransaction * -1;
                 $valueToPayee = $valueTransaction;
+
+                $this->setAmoutToWalletByType(
+                    $transaction->getWalletPayee(),
+                    $valueToPayee
+                );
                 break;
 
-            case Transaction::TYPE_REVERT:
+            case TransactionBusiness::TYPE_CREDIT:
                 $valueToPayer = $valueTransaction;
-                $valueToPayee = $valueTransaction * -1;
                 break;
         }
 
         $this->setAmoutToWalletByType(
             $transaction->getWalletPayer(),
             $valueToPayer
-        );
-
-        $this->setAmoutToWalletByType(
-            $transaction->getWalletPayee(),
-            $valueToPayee
         );
     }
 
@@ -129,6 +129,6 @@ class WalletService
      */
     protected function save(Wallet $entity) : bool
     {
-        return $entity->save();
+        return $this->walletRepository->save($entity);
     }
 }

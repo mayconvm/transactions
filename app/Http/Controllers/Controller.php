@@ -21,7 +21,7 @@ class Controller extends BaseController
      * @param  array  $data    Context data to error
      * @return Response
      */
-    protected function dispathError(string $message = null, int $code = null, array $data = []) : Response
+    protected function dispathError(string $message = null, int $code = null, array $data = [])
     {
         $result = array_filter(compact('message', 'code'));
         return response()

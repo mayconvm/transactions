@@ -13,16 +13,6 @@ namespace App\Business\Model;
 interface TransactionInterface extends ModelInterface
 {
     /**
-     * Type credit
-     */
-    const TYPE_CREDIT = 'credit';
-
-    /**
-     * Type revert
-     */
-    const TYPE_REVERT = 'revert';
-
-    /**
      * Get transaction code
      * @return string
      */
@@ -38,7 +28,7 @@ interface TransactionInterface extends ModelInterface
      * Get id payee
      * @return int
      */
-    public function getPayee() : int;
+    public function getPayee() : ?int;
 
     /**
      * Get transaction value

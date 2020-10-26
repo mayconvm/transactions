@@ -7,6 +7,7 @@
 namespace App\Services;
 
 use DB;
+// use Illuminate\Database\DatabaseManager as DB;
 use App\Models\Account;
 use App\Models\Wallet;
 use App\Models\Transaction;
@@ -79,10 +80,39 @@ class TransactionService
      */
     public function executeTransaction(ParameterBag $input) : Transaction
     {
-        $transaction = $this->prepareTransaction(
-            $this->getNewTransaction($input)
+        $transaction = $this->getNewTransaction(
+            $input->get('value'),
+            $input->get('payer'),
+            $input->get('payee')
         );
+        // type
+        $transaction->setType(TransactionBusiness::TYPE_TRANSFER);
+        $transaction = $this->prepareTransaction($transaction);
 
+        return $this->execute($transaction);
+    }
+
+    public function executeTransactionCredit(ParameterBag $input) : Transaction
+    {
+        $transaction = $this->getNewTransaction(
+            $input->get('value'),
+            $input->get('payer')
+        );
+        // type
+        $transaction->setType(TransactionBusiness::TYPE_CREDIT);
+
+        $transaction = $this->prepareTransaction($transaction);
+
+        return $this->execute($transaction);
+    }
+
+    /**
+     * Execute transaction
+     * @param  Transaction $transaction Transaction
+     * @return Transaction
+     */
+    protected function execute(Transaction $transaction) : Transaction
+    {
         if ($transaction->getStatus()) {
             $this->transactionBusiness->execute($transaction);
         }
@@ -125,14 +155,13 @@ class TransactionService
      */
     protected function prepareTransaction(Transaction $transaction) : Transaction
     {
-        // type
-        $transaction->setType(Transaction::TYPE_CREDIT);
+        if ($transaction->getType() === TransactionBusiness::TYPE_TRANSFER) {
+            // check availability
+            if (!$this->transactionBusiness->validateAvailability($transaction)) {
+                $transaction->setStatus(false);
 
-        // check availability
-        if (!$this->transactionBusiness->validateAvailability($transaction)) {
-            $transaction->setStatus(false);
-
-            return $transaction;
+                return $transaction;
+            }
         }
 
         $authorization = $this->authorizationService->checkAuthorization($transaction);
@@ -150,19 +179,26 @@ class TransactionService
 
     /**
      * Get transaction
-     * @param  ParameterBag $input Create new transaction
+     * @param  float    $value Value
+     * @param  int|null $payer Id payer
+     * @param  int|null $payee Id payee
      * @return Transaction
      */
-    protected function getNewTransaction(ParameterBag $input) : Transaction
+    protected function getNewTransaction(float $value, int $payer = null, int $payee = null) : Transaction
     {
-        $payer = $this->getWalletAccount($input->get('payer'));
-        $payee = $this->getWalletAccount($input->get('payee'));
-
-
         $transaction = new Transaction();
-        $transaction->setWalletPayee($payee);
-        $transaction->setWalletPayer($payer);
-        $transaction->setValue($input->get('value'));
+
+        $transaction->setWalletPayer(
+            $this->getWalletAccount($payer)
+        );
+
+        if (!empty($payee)) {
+            $transaction->setWalletPayee(
+                $this->getWalletAccount($payee)
+            );
+        }
+
+        $transaction->setValue($value);
 
         return $transaction;
     }
@@ -187,9 +223,5 @@ class TransactionService
     protected function getAccount(int $account) : Account
     {
         return $this->accountService->getAccount($account);
-    }
-
-    public function retrieveTransaction()
-    {
     }
 }

@@ -39,7 +39,7 @@ class TransactionRepository
         // transaction code
         if (empty($entity->getId())) {
             $entity->setTransactionCode(
-                md5($this->getPayer() . $this->getPayee() . $this->getValue() . time())
+                md5($entity->getPayer() . $entity->getPayee() . $entity->getValue() . time())
             );
         }
 

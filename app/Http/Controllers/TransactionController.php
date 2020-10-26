@@ -6,8 +6,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\TransactionService;
 use App\Http\Inputs\TransactionInput;
+use App\Http\Inputs\TransactionCreditInput;
 
 /**
  * Classe TransactionController
@@ -37,18 +39,42 @@ class TransactionController extends Controller
      * @param  TransactionInput $transactionInput Data request to transaction
      * @return Response
      */
-    public function execute(TransactionInput $transactionInput)
+    public function execute(Request $request)
     {
+        $transactionInput = new TransactionInput($request->all());
         if (!$transactionInput->valid()) {
             return $this->dispathError(null, null, $transactionInput->getErrors());
         }
 
         try {
             $transactionEntity = $this->transactionService->executeTransaction(
-                $transactionInput->json()
+                $transactionInput
             );
         } catch (\Exception $e) {
-            // throw $e;
+            return $this->dispathError($e->getMessage(), $e->getCode());
+        }
+
+        return response()->json($transactionEntity->toArray());
+    }
+
+    /**
+     * Execute transaction
+     * @param  TransactionInput $transactionInput Data request to transaction
+     * @return Response
+     */
+    public function executeCredit(Request $request)
+    {
+        $transactionInput = new TransactionCreditInput($request->all());
+        if (!$transactionInput->valid()) {
+            return $this->dispathError(null, null, $transactionInput->getErrors());
+        }
+
+        try {
+            $transactionEntity = $this->transactionService->executeTransactionCredit(
+                $transactionInput
+            );
+        } catch (\Exception $e) {
+            throw $e;
             return $this->dispathError($e->getMessage(), $e->getCode());
         }
 

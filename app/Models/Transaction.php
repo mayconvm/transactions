@@ -111,7 +111,7 @@ class Transaction extends Model implements TransactionInterface
      * Get id payee
      * @return int
      */
-    public function getPayee() : int
+    public function getPayee() : ?int
     {
         return $this->payee;
     }

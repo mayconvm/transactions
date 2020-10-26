@@ -19,7 +19,7 @@ class TransactionInput extends InputAbstract
     public function rules() : array
     {
         return [
-            'value' => 'required:float',
+            'value' => 'required|numeric',
             'payer' => 'required|int',
             'payee' => 'required|int',
         ];
