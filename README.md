@@ -1,6 +1,5 @@
 # Project to transactions
 
-
 ## Install
 ```bash
 $ docker-compose up
@@ -15,7 +14,7 @@ $ docker-compose exec phpfpm php /usr/bin/composer.phar test-coverage
 
 Tests
 ```bash
-$ docker-compose exec phpcli artisan migrate
+$ docker-compose exec phpfpm php /usr/bin/composer.phar test
 ```
 
 ## Folders
@@ -82,3 +81,36 @@ $ docker-compose exec phpcli artisan migrate
 
 
 ## Arctethure
+
+
+## Routes
+
+### Create account
+POST /account
+```js
+{
+    "name": "FULL NAME",
+    "document": "14253678955",
+    "email": "email@email.com",
+    "type": "business" # person or business
+}
+```
+
+### Added funds to account wallet
+POST /transaction/credit
+```js
+{
+    "value" : 100,
+    "payer" : 1      # Account ID
+}
+```
+
+### Execute transaction
+POST /transaction
+```js
+{
+    "value" : 100,
+    "payer" : 1,    # Account ID
+    "payee" : 2     # Account ID
+}
+```

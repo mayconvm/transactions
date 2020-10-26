@@ -14,7 +14,6 @@ use App\Http\Controllers\AccountController;
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->get('/account/{accountId}', 'AccountController@show');
 $router->post('/account', 'AccountController@store');
 
 // transaction
