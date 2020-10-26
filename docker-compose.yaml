@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   db:
-    container_name: db
+    container_name: db_transactions
     image: mysql:5
     ports:
       - "3306:3306"
@@ -15,7 +15,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_transactions
     restart: always
     ports:
       - "80:80"
@@ -26,21 +26,11 @@ services:
       - phpfpm
 
   phpfpm:
-    container_name: phpfpm
+    container_name: phpfpm_transactions
     build:
       context: ./
       dockerfile: ./docker/php/Dockerfile
-    image: phpfpm
     volumes:
       - ./:/var/www/html/app
     depends_on:
       - db
-
-  # phpcli:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/cli/Dockerfile
-  #   image: phpcli
-  #   container_name: phpcli
-  #   volumes:
-  #     - ./:/var/www/html/app
