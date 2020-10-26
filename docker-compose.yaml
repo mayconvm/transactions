@@ -4,10 +4,32 @@ services:
   db:
     image: mysql:5
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=123123root
       - MYSQL_DATABASE=transactions
       - MYSQL_USER=transaction
       - MYSQL_PASSWORD=123123
     command: --max_allowed_packet=512M --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/app
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - phpfpm
+
+  phpfpm:
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    image: phpfpm
+    volumes:
+      - ./:/var/www/html/app
+    # depends_on:
+    #   - db
