@@ -51,6 +51,7 @@ class TransactionControllerTest extends TestCase
 
     public function testAddAmountToWallet()
     {
+        $this->withoutEvents();
         $mock = \Mockery::mock(AuthorizationProviderInterface::class);
         $mock->shouldReceive('checkAuthorization')
             ->once()
@@ -84,6 +85,7 @@ class TransactionControllerTest extends TestCase
 
     public function testAddAmountToWalletWithoutValue()
     {
+        $this->withoutEvents();
         $data = [
             "payer" => $this->createUser(),
         ];
@@ -98,6 +100,7 @@ class TransactionControllerTest extends TestCase
 
     public function testAddAmountToWalletInvalidPayer()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 10,
             "payer" => 0,
@@ -113,6 +116,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionSuccess()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 100,
             "payer" => $this->createUser(),
@@ -147,6 +151,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionPersonBusiness()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 100,
             "payer" => $this->createUser(),
@@ -181,6 +186,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionBusinessBusiness()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 100,
             "payer" => $this->createUser(AccountBusiness::TYPE_BUSINESS),
@@ -211,6 +217,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionPersonWithoutAmout()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 100,
             "payer" => $this->createUser(),
@@ -241,6 +248,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionPersonUnAuthorization()
     {
+        $this->withoutEvents();
         $mock = \Mockery::mock(AuthorizationProviderInterface::class);
         $mock->shouldReceive('checkAuthorization')
             ->once()
@@ -285,6 +293,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionWithoutValue()
     {
+        $this->withoutEvents();
         $data = [
             "payer" => $this->createUser(),
             "payee" => $this->createUser(AccountBusiness::TYPE_BUSINESS),
@@ -300,6 +309,7 @@ class TransactionControllerTest extends TestCase
 
     public function testExecuteTransactionInvalidPayer()
     {
+        $this->withoutEvents();
         $data = [
             "value" => 1,
             "payer" => 987,

@@ -54,13 +54,13 @@ class AuthorizationProviderHttp implements AuthorizationProviderInterface
     public function checkAuthorization(Transaction $transaction) : array
     {
         $data = $this->prepareData($transaction);
-        $result = $this->adapter->send($data);
+        $result = json_decode($this->adapter->send($data), true);
 
         if (empty($result)) {
             return [];
         }
 
-        return [];
+        return $result;
     }
 
     /**
