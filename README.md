@@ -2,7 +2,7 @@
 
 ## Install
 ```bash
-$ docker-compose up
+$ docker-compose up --build -d
 ```
 
 ## Others commands
